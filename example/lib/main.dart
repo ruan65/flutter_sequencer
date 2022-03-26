@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_sequencer/global_state.dart';
-import 'package:flutter_sequencer/models/sfz.dart';
 import 'package:flutter_sequencer/models/instrument.dart';
 import 'package:flutter_sequencer/sequence.dart';
 import 'package:flutter_sequencer/track.dart';
@@ -12,9 +11,9 @@ import 'components/step_count_selector.dart';
 import 'components/tempo_selector.dart';
 import 'components/track_selector.dart';
 import 'components/transport.dart';
+import 'constants.dart';
 import 'models/project_state.dart';
 import 'models/step_sequencer_state.dart';
-import 'constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,38 +45,12 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     GlobalState().setKeepEngineRunning(true);
 
     final instruments = [
-      Sf2Instrument(path: "assets/sf2/TR-808.sf2", isAsset: true),
+      // Sf2Instrument(path: "assets/sf2/TR-808.sf2", isAsset: true),
       SfzInstrument(
         path: "assets/sfz/GMPiano.sfz",
         isAsset: true,
         tuningPath: "assets/sfz/meanquar.scl",
       ),
-      RuntimeSfzInstrument(
-          id: "Sampled Synth",
-          sampleRoot: "assets/wav",
-          isAsset: true,
-          sfz: Sfz(groups: [
-            SfzGroup(regions: [
-              SfzRegion(sample: "D3.wav", key: 62),
-              SfzRegion(sample: "F3.wav", key: 65),
-              SfzRegion(sample: "Gsharp3.wav", key: 68),
-            ])
-          ])),
-      RuntimeSfzInstrument(
-          id: "Generated Synth",
-          // This SFZ doesn't use any sample files, so just put "/" as a placeholder.
-          sampleRoot: "/",
-          isAsset: false,
-          // Based on the Unison Oscillator example here:
-          // https://sfz.tools/sfizz/quick_reference#unison-oscillator
-          sfz: Sfz(groups: [
-            SfzGroup(regions: [
-              SfzRegion(sample: "*saw", otherOpcodes: {
-                "oscillator_multi": "5",
-                "oscillator_detune": "50",
-              })
-            ])
-          ])),
     ];
 
     sequence.createTracks(instruments).then((tracks) {
